@@ -1,0 +1,243 @@
+body {
+}
+.buttons {
+    position: absolute;
+    right: 10%;
+    button {
+        border: 1px solid black;
+        border-radius: 1rem;
+        padding: 0.5rem 1rem;
+        font-size: 1.2rem;
+        font-weight: bold;
+        cursor: pointer;
+        &.add {
+            background-color: lightblue;
+        }
+        &.edit {
+            background-color: lightgreen;
+        }
+        &.save {
+            background-color: green;
+        }
+        &.cancel {
+            background-color: grey;
+        }
+        &.delete {
+            background-color: coral;
+        }
+    }
+}
+.page_container {
+    background-color: hsl(60, 20%, 95%);
+    border-radius: 3rem;
+    width: 1000px;
+    height: 1316px;
+    max-height: 1316px;
+    margin: auto;
+    margin-top: 1rem;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 575px 375px;
+    grid-gap: 50px;
+    .content {
+        margin-right: 0.5rem;
+        .name, .name input, .name textarea {
+            font-size: 5rem;
+            font-family: 'Berkshire Swash', cursive;
+            max-width: 586px;
+        }
+        .race, .race input, .class, .class input  {
+            font-size: 2rem;
+        }
+        .stats-and-other {
+            display: grid;
+            
+            .stats {
+                padding: 1rem 0 0 0;
+                display: grid;
+                grid-template-columns: repeat(3, 154px);
+                .stat {
+                    text-align: center;
+                    border: 2px solid black;
+                    border-radius: 1rem;
+                    margin: .5rem 1rem .5rem 0;
+                    padding: 0.4rem;
+                    width: 120px;
+                    .stat_title {
+                        font-size: 1rem;
+                        display: block;
+                        font-weight: bold;
+                    }
+                    .stat_modifier {
+                        display: block;
+                        font-size: 1.8rem;
+                        font-weight: bold;
+                        padding-top: 0.5rem;
+                    }
+                    .stat_score input {
+                        max-width: 80px;
+                        text-align: center;
+                    }
+                }
+            }
+            .ac_hp {
+                display: flex;
+                justify-content: space-between;
+            }
+            .ac_hp {
+                margin-top: 1rem;
+                margin-bottom: 2rem;
+            }
+            .ac_hp, .ac_hp input {
+                font-size: 1.5rem;
+                .ac {
+                    display: inline-block;
+                    padding: 4px;
+                    .title {
+                        font-weight: bold;
+                    }
+                }
+                .hp {
+                    display: inline-block;
+                    padding: 4px;
+                    // margin-left: 122px;
+                    .title {
+                        font-weight: bold;
+                    }
+                }
+                .score input {
+                    max-width: 50px;
+                }
+            }
+        }
+        .other {
+        }
+    }
+    .pic-and-spells {
+        .pic {
+            overflow: hidden;
+            img {
+                width: 99%;
+                border: 1px solid black;
+                border-radius: 3rem;
+            }
+        }
+    }
+    .spells, .equipment {
+            text-align: start;
+            border: 1px solid black;
+            border-radius: 3rem;
+            padding: 0.5rem 1rem 2rem;
+            font-size: 1.2rem;
+            line-height: 1.5rem;
+        h3 {
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        div {
+            padding-bottom: 1rem;
+            .title {
+                font-size: 1.2rem;
+                font-weight: bold;
+                padding-right: 4px;
+            } 
+            .description {
+                font-style: italic;
+            }
+        }
+    }
+}
+
+.equipment {
+    margin-top: 115px;
+
+}
+
+
+.Biff_Buxler .equipment {
+    margin-top: 115px;
+}
+.Ceren_Tallinn .equipment {
+    margin-top: 115px;
+}
+.Xarbert_Camshaft .equipment{
+    margin-top: 150px;
+}
+.Xarolth_Tyrlin .equipment{
+
+    margin-top: 62px;
+}
+.Tiana_Thunderpants .equipment{
+
+    margin-top: 60px;
+}
+.December .equipment{
+
+    margin-top: 22px;
+}
+.Kaylee_Frye {
+    .spells {
+    margin-top: 100px;
+    }
+    .equipment {
+    margin-top: 36px;
+    }
+}
+.Arthos_Battersby .equipment{
+
+    margin-top: 72px;
+}
+
+.Kaptain_Killer {
+    .spells {
+    margin-top: 100px;
+    }
+    .equipment {
+    margin-top: 36px;
+    }
+}
+.Tsigliana_Merovin {
+    .spells {
+    }
+    .equipment {
+    margin-top: 36px;
+    }
+}
+
+.Arakxes_Wilson {
+
+    .equipment {
+    margin-top: 24px;
+    }
+}
+.Click_Clack {}
+.Sasha_Wondertoes {
+
+    .equipment {
+    margin-top: 232px;
+    }
+}
+.Eden_Telomere {
+
+    .equipment {
+    margin-top: 24px;
+    }
+}
+.Yx_Creekdancer {
+
+    .spells {
+    margin-top: 100px;
+    }
+    .equipment {
+    margin-top: 44px;
+    }
+}
+.Grung {
+
+    .spells {
+    margin-top: 86px;
+    }
+    .equipment {
+    margin-top: 44px;
+    }
+}
