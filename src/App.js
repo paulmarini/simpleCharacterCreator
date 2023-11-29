@@ -9,8 +9,8 @@ function App() {
 
 
   const addNewCharacter = (newCharacter) => {
-    console.log('newCharacter:', newCharacter)
-    console.log('characters:', characters)
+    console.log('newCharacter:', newCharacter) 
+    console.log('characters:', characters) 
     setCharacters(prevValue => {
     return [...prevValue, newCharacter]
     })
@@ -40,8 +40,11 @@ function App() {
 
   }, [])
 
+  useEffect(() => {
+    localStorage.setItem('characters', JSON.stringify(characters))
+  }, [characters])
 
-  const pages = characters.map(character => <Character character={character} addNewCharacter={addNewCharacter} updateCharacter={updateCharacter} deleteCharacter={deleteCharacter} />)
+  const pages = characters.map(character => <Character key={character.id} character={character} addNewCharacter={addNewCharacter} updateCharacter={updateCharacter} deleteCharacter={deleteCharacter} />)
 
   return (
     <>
