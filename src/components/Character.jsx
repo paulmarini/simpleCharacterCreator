@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Buttons from "./Buttons";
 import CharacterField from "./CharacterField";
 import CharacterStatField from "./CharacterStatField";
+import CharacterItems from "./CharacterItems";
 
 export default function Character({
   character,
@@ -38,12 +39,14 @@ export default function Character({
           hitPoints: 10,
           equipment: [
             {
+              id: uuidv4(),
               title: "",
               description: "",
             },
           ],
           spellsOrSkills: [
             {
+              id: uuidv4(),
               title: "",
               description: "",
             },
@@ -60,6 +63,7 @@ export default function Character({
         break;
       case "cancel":
         setMode("view");
+        setCurrentCharacter(character);
         break;
       case "delete":
         deleteCharacter(currentCharacter);
@@ -67,21 +71,35 @@ export default function Character({
       default:
         break;
     }
-    console.log(currentCharacter); //debug
+    // console.log(currentCharacter); //debug
   };
 
   const handleChange = (e) => {
-    console.log(e.target.value);
-    setCurrentCharacter({
-      ...currentCharacter,
-      [e.target.name]: e.target.value,
-    });
+    console.log("e", e);
+    if (e.target.classList.contains("statField")) {
+      const stats = { ...currentCharacter.stats };
+      stats[e.target.name] = e.target.value;
+      setCurrentCharacter({
+        ...currentCharacter,
+        stats: stats,
+      });
+    } else {
+      setCurrentCharacter({
+        ...currentCharacter,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
+
+  useEffect(() => {
+    // console.log('currentCharacter:', currentCharacter)
+  }, [currentCharacter]);
 
   return (
     <div
-      key={character.name}
-      className={character.name.replace(" ", "_") + " container page_container"}
+      className={
+        currentCharacter.name.replace(" ", "_") + " container page_container"
+      }
     >
       <Buttons mode={mode} handleClick={handleClick} />
       <div className="content">
@@ -114,24 +132,14 @@ export default function Character({
         </div>
         <div className="stats-and-other">
           <div className="stats">
-            {statsKeys.map((statKey, i) => (
-              <div key={statKey} className={statKey + " stat"}>
-                <span className="stat_title">
-                  {statKey.charAt(0).toUpperCase() + statKey.slice(1)}
-                </span>
-                <span className="stat_score">
-                  <CharacterStatField
-                    mode={mode}
-                    statKey={statKey}
-                    currentCharacter={currentCharacter}
-                    handleChange={handleChange}
-                    type="number"
-                  />
-                </span>
-                <span className="stat_modifier">
-                  + {Math.floor((currentCharacter.stats[statKey] - 10) / 2)}
-                </span>
-              </div>
+            {statsKeys.map((statKey) => (
+              <CharacterStatField
+                mode={mode}
+                statKey={statKey}
+                currentCharacter={currentCharacter}
+                handleChange={handleChange}
+                type="number"
+              />
             ))}
           </div>
           <div className="ac_hp">
@@ -164,27 +172,36 @@ export default function Character({
         <div className="other">
           <div className="spells">
             <h3>Skills and Spells</h3>
-            {character.spellsOrSkills.map((spellOrSkill, i) => (
-              <div key={i}>
-                <span className="title">{spellOrSkill.title}</span>
-                <span className="description">{spellOrSkill.description}</span>
-              </div>
-            ))}
+            <CharacterItems
+              mode={mode}
+              itemType="spellsOrSkills"
+              currentCharacter={currentCharacter}
+            />
           </div>
         </div>
       </div>
       <div className="pic-and-spells">
         <div className="pic">
-          <img src={character.pic} alt="character pic" />
+          <img src={currentCharacter.pic} alt="character pic" />
+          {mode === "view" ? (
+            " "
+          ) : (
+            <input
+              type="url"
+              name="pic"
+              placeholder="https://url/to/your/pic.jpg"
+              value={currentCharacter.pic}
+              onChange={handleChange}
+            />
+          )}
         </div>
         <div className="equipment">
           <h3>Equipment</h3>
-          {character.equipment.map((equipment, i) => (
-            <div key={i}>
-              <span className="title">{equipment.title} </span>
-              <span className="description">{equipment.description}</span>
-            </div>
-          ))}
+          <CharacterItems
+            mode={mode}
+            itemType="equipment"
+            currentCharacter={currentCharacter}
+          />
         </div>
       </div>
     </div>
