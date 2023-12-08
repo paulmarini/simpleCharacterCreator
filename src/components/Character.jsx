@@ -1,72 +1,43 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import Buttons from "./Buttons";
-import CharacterField from "./CharacterField";
-import CharacterStatField from "./CharacterStatField";
-import CharacterItems from "./CharacterItems";
+import sanitizeHtml from "sanitize-html";
+
+import PageButtons from "./PageButtons";
+import Field from "./Field";
+import Input from "./Input";
+import StatInput from "./StatInput";
+import Items from "./Items";
 
 export default function Character({
   character,
-  addNewCharacter,
   updateCharacter,
   deleteCharacter,
 }) {
-  const [mode, setMode] = useState("view");
+  const [editMode, setEditMode] = useState(false);
+  const [deleteMode, setDeleteMode] = useState(false)
   const [currentCharacter, setCurrentCharacter] = useState(character);
-
-  const statsKeys = Object.keys(character.stats);
 
   const handleClick = (e) => {
     const { name } = e.target;
     switch (name) {
-      case "new":
-        const newCharacter = {
-          id: uuidv4(),
-          name: "",
-          pic: "",
-          race: "",
-          class: "",
-          level: 3,
-          stats: {
-            strength: 10,
-            dexterity: 10,
-            constitution: 10,
-            intelligence: 10,
-            wisdom: 10,
-            charisma: 10,
-          },
-          armorClass: 10,
-          hitPoints: 10,
-          equipment: [
-            {
-              id: uuidv4(),
-              title: "",
-              description: "",
-            },
-          ],
-          spellsOrSkills: [
-            {
-              id: uuidv4(),
-              title: "",
-              description: "",
-            },
-          ],
-        };
-        addNewCharacter(newCharacter);
-        break;
       case "edit":
-        setMode("edit");
+        setEditMode(true);
+        setDeleteMode(false)
         break;
       case "save":
         updateCharacter(currentCharacter);
-        setMode("view");
+        setEditMode(false);
+        setDeleteMode(false)
         break;
       case "cancel":
-        setMode("view");
+        setEditMode(false);
+        setDeleteMode(false)
         setCurrentCharacter(character);
         break;
       case "delete":
         deleteCharacter(currentCharacter);
+        setEditMode(false);
+        setDeleteMode(false)
         break;
       default:
         break;
@@ -74,96 +45,127 @@ export default function Character({
     // console.log(currentCharacter); //debug
   };
 
-  const handleChange = (e) => {
-    console.log("e", e);
+  const toggleDeleteButton = () => {
+    setDeleteMode(!deleteMode)  
+  }
+
+  const handleChangeField = (fieldName, contents) => {
+    const sanitizeConf = { allowedTags: [], allowedAttributes: {} };
+    const sanitizedContents = sanitizeHtml(contents, sanitizeConf);
+    setCurrentCharacter((prevValue) => {
+      return {...prevValue, [fieldName]: sanitizedContents}
+    });
+  };
+
+  const handleChangeInput = (e) => {
+    const { name, value } = e.currentTarget;
+
     if (e.target.classList.contains("statField")) {
       const stats = { ...currentCharacter.stats };
-      stats[e.target.name] = e.target.value;
-      setCurrentCharacter({
-        ...currentCharacter,
-        stats: stats,
+      stats[name] = value;
+      setCurrentCharacter((prevValue) => {
+        return {...prevValue, stats: stats}
       });
     } else {
-      setCurrentCharacter({
-        ...currentCharacter,
-        [e.target.name]: e.target.value,
+      setCurrentCharacter((prevValue) => {
+        return {...prevValue, [name]: value}
       });
     }
   };
 
-  useEffect(() => {
-    // console.log('currentCharacter:', currentCharacter)
-  }, [currentCharacter]);
+  const handleAddItemRow = (itemType) => {
+    setCurrentCharacter(prevValue => {
+      const itemList = [ ...prevValue[itemType]]
+      itemList.push({title: 'title', description: 'description', id: uuidv4()})
+      return { ...prevValue, [itemType]: itemList }
+    })
+  }
+  const handleDeleteItemRow = (itemType, itemId)  => {
+    setCurrentCharacter(prevValue => {
+      const itemList = [ ...prevValue[itemType].filter(item => item.id !== itemId)]
+      return { ...prevValue, [itemType]: itemList }
+    })
+  }
+
+  const handleChangeItem = (itemType, itemId, fieldName, contents) => {
+    const sanitizeConf = { allowedTags: [], allowedAttributes: {} };
+    const sanitizedContents = sanitizeHtml(contents, sanitizeConf);
+    setCurrentCharacter((prevValue) => {
+      const itemsList =  [ ...prevValue[itemType]]
+      const item = itemsList.find(item => item.id === itemId)
+      item[fieldName] = sanitizedContents
+      return { ...prevValue, [itemType]: itemsList }
+    });
+  };
+
 
   return (
     <div
       className={
-        currentCharacter.name.replace(" ", "_") + " container page_container"
+        currentCharacter.name.replace(" ", "-") + " container page-container"
       }
     >
-      <Buttons mode={mode} handleClick={handleClick} />
+      <PageButtons 
+        editMode={editMode} 
+        deleteMode={deleteMode}
+        handleClick={handleClick} 
+        toggleDeleteButton={toggleDeleteButton}
+      />
       <div className="content">
-        <div className="name">
-          {" "}
-          <CharacterField
-            mode={mode}
-            fieldName="name"
-            currentCharacter={currentCharacter}
-            handleChange={handleChange}
-          />
-        </div>
-        <div className="race">
-          Race:
-          <CharacterField
-            mode={mode}
-            fieldName="race"
-            currentCharacter={currentCharacter}
-            handleChange={handleChange}
-          />
-        </div>
-        <div className="class">
-          Class:
-          <CharacterField
-            mode={mode}
-            fieldName="class"
-            currentCharacter={currentCharacter}
-            handleChange={handleChange}
-          />
-        </div>
+        <Field
+          fieldName="name"
+          currentCharacter={currentCharacter}
+          editMode={editMode}
+          handleChangeField={handleChangeField}
+        />
+        <Field
+          fieldName="race"
+          currentCharacter={currentCharacter}
+          editMode={editMode}
+          handleChangeField={handleChangeField}
+        />
+        <Field
+          fieldName="class"
+          currentCharacter={currentCharacter}
+          editMode={editMode}
+          handleChangeField={handleChangeField}
+        />
+
         <div className="stats-and-other">
           <div className="stats">
-            {statsKeys.map((statKey) => (
-              <CharacterStatField
-                mode={mode}
+            {Object.keys(character.stats).map((statKey) => (
+              <StatInput
+                key={statKey}
+                editMode={editMode}
                 statKey={statKey}
                 currentCharacter={currentCharacter}
-                handleChange={handleChange}
-                type="number"
+                handleChangeInput={handleChangeInput}
               />
             ))}
           </div>
-          <div className="ac_hp">
+
+          <div className="ac-hp">
             <div className="ac">
               <span className="title">Armor Class:</span>
               <span className="score">
-                <CharacterField
-                  mode={mode}
+                <Input
                   fieldName="armorClass"
                   currentCharacter={currentCharacter}
-                  handleChange={handleChange}
                   type="number"
+                  editMode={editMode}
+                  handleChangeInput={handleChangeInput}
                 />
               </span>
             </div>
             <div className="hp">
               <span className="title">Hit Points:</span>
               <span className="score">
-                <CharacterField
-                  mode={mode}
+                <Input
                   fieldName="hitPoints"
                   currentCharacter={currentCharacter}
-                  handleChange={handleChange}
                   type="number"
+                  editMode={editMode}
+                  handleChangeInput={handleChangeInput}
                 />
               </span>
             </div>
@@ -172,10 +174,13 @@ export default function Character({
         <div className="other">
           <div className="spells">
             <h3>Skills and Spells</h3>
-            <CharacterItems
-              mode={mode}
+            <Items
+              editMode={editMode}
               itemType="spellsOrSkills"
               currentCharacter={currentCharacter}
+              handleChangeItem={handleChangeItem}
+              handleAddItemRow={handleAddItemRow}
+              handleDeleteItemRow={handleDeleteItemRow}
             />
           </div>
         </div>
@@ -183,24 +188,28 @@ export default function Character({
       <div className="pic-and-spells">
         <div className="pic">
           <img src={currentCharacter.pic} alt="character pic" />
-          {mode === "view" ? (
-            " "
+          {!editMode ? (
+            <span className="image-input-spacer"></span>
           ) : (
             <input
               type="url"
               name="pic"
               placeholder="https://url/to/your/pic.jpg"
-              value={currentCharacter.pic}
-              onChange={handleChange}
+              className="editing"
+              value={currentCharacter["pic"]}
+              onChange={handleChangeInput}
             />
           )}
         </div>
         <div className="equipment">
           <h3>Equipment</h3>
-          <CharacterItems
-            mode={mode}
+          <Items
+            editMode={editMode}
             itemType="equipment"
             currentCharacter={currentCharacter}
+            handleChangeItem={handleChangeItem}
+            handleAddItemRow={handleAddItemRow}
+            handleDeleteItemRow={handleDeleteItemRow}
           />
         </div>
       </div>

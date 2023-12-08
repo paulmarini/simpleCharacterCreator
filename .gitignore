@@ -27,3 +27,4 @@ temp-*
 
 # vscode settings
 /.vscode
+/.vscode/*

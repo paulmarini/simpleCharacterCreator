@@ -1,246 +1,394 @@
-.buttons {
-    position: absolute;
-    right: 10%;
-    button {
-        border: 1px solid black;
-        border-radius: 1rem;
-        padding: 0.5rem 1rem;
-        font-size: 1.2rem;
-        font-weight: bold;
-        cursor: pointer;
-        &.add {
-            background-color: lightblue;
-        }
-        &.edit {
-            background-color: lightgreen;
-        }
-        &.save {
-            background-color: green;
-        }
-        &.cancel {
-            background-color: grey;
-        }
-        &.delete {
-            background-color: coral;
-        }
+@media print {
+    .no-print {
+        display: none!important;
     }
 }
-.page_container {
-    background-color: hsl(60, 20%, 95%);
-    border-radius: 3rem;
-    width: 1000px;
-    height: 1316px;
-    max-height: 1316px;
-    margin: auto;
-    margin-top: 1rem;
-    padding: 2rem;
-    display: grid;
-    grid-template-columns: 575px 375px;
-    grid-gap: 50px;
-    .content {
-        margin-right: 0.5rem;
-        .name, .name input, .name textarea {
-            font-size: 5rem;
-            font-family: 'Berkshire Swash', cursive;
-            max-width: 586px;
-        }
-        .race, .race input, .class, .class input  {
-            font-size: 2rem;
-        }
-        .stats-and-other {
-            display: grid;
-            
-            .stats {
-                padding: 1rem 0 0 0;
-                display: grid;
-                grid-template-columns: repeat(3, 154px);
-                .stat {
-                    text-align: center;
-                    border: 2px solid black;
-                    border-radius: 1rem;
-                    margin: .5rem 1rem .5rem 0;
-                    padding: 0.4rem;
-                    width: 120px;
-                    .stat_title {
-                        font-size: 1rem;
-                        display: block;
-                        font-weight: bold;
-                    }
-                    .stat_modifier {
-                        display: block;
-                        font-size: 1.8rem;
-                        font-weight: bold;
-                        padding-top: 0.5rem;
-                    }
-                    .stat_score input {
-                        max-width: 80px;
-                        text-align: center;
-                    }
-                }
-            }
-            .ac_hp {
-                display: flex;
-                justify-content: space-between;
-            }
-            .ac_hp {
-                margin-top: 1rem;
-                margin-bottom: 2rem;
-            }
-            .ac_hp, .ac_hp input {
-                font-size: 1.5rem;
-                .ac {
-                    display: inline-block;
-                    padding: 4px;
-                    .title {
-                        font-weight: bold;
-                    }
-                }
-                .hp {
-                    display: inline-block;
-                    padding: 4px;
-                    // margin-left: 122px;
-                    .title {
-                        font-weight: bold;
-                    }
-                }
-                .score input {
-                    max-width: 50px;
-                }
-            }
-        }
-        .other {
-            outline: none;
-        }
+
+body .editing {
+  background-color: khaki;
+  background-image: linear-gradient(45deg, papayawhip, khaki);
+  outline: 1px blue dashed;
+
+  /* input field specifically */
+  border: none;
+}
+body .editableField {
+  display: inline;
+}
+.page-header {
+  position: sticky;
+  left: 5%;
+  bottom: calc(100% - 305px);
+  background-color: hsl(60, 20%, 95%);
+  border-radius: 1.8rem;
+  padding: 2rem 1rem;
+  width: 12rem;
+  text-align: center;
+  button {
+    margin: 0 auto 16px;
+    display: block;    
+    border: 1px solid black;
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    &.add {
+      background-color: lightblue;
+      background-image: linear-gradient(90deg, lightblue, aliceblue );
+      border-color: blue;
+      &:hover {
+       background-image: none;
+      }
     }
-    .pic-and-spells {
-        .pic {
-            overflow: hidden;
-            img {
-                display: block;
-                width: 99%;
-                border: 1px solid black;
-                border-radius: 2rem;
-            }
-            input {
-                width: 97%;
-                border: 1px solid black;
-                padding: 4px;
-            }
-        }
+  }
+}
+.page-buttons {
+  position: absolute;
+  right: 5%;
+  margin-top: -2rem;
+  background-color: hsl(60, 20%, 95%);
+  border-radius: 1.8rem;
+  padding: 2rem 1rem;
+  h3.delete-message {
+    text-align: center;
+  }
+  button {
+    border: 1px solid black;
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    &.add {
+      background-color: lightblue;
+      background-image: linear-gradient(90deg, lightblue, aliceblue );
+      border-color: blue;
+      &:hover {
+       background-image: none;
+      }
     }
-    .spells, .equipment {
-            text-align: start;
-            border: 1px solid black;
-            border-radius: 2rem;
-            padding: 0.5rem 1rem 2rem;
-            font-size: 1.2rem;
-            line-height: 1.5rem;
-        h3 {
-            text-align: center;
-            font-size: 1.5rem;
-        }
-        div {
-            padding-bottom: 1rem;
-            .title {
-                font-size: 1.2rem;
-                font-weight: bold;
-                padding-right: 4px;
-            } 
-            .description {
-                font-style: italic;
-            }
-        }
+    &.edit {
+      background-color: lightgreen;
+      background-image: linear-gradient(90deg, lightgreen, #c0ffc0 );
+      border-color: green;
+      width: 12rem;
+      display: block;
+      margin-bottom: 1rem;
+      &:hover {
+       background-image: none;
+      }
     }
+    &.save {
+      background-color: green;
+      background-image: linear-gradient(90deg, green, lightgreen );
+      border-color: darkgreen;
+      width: 5.5rem;
+      &:hover {
+       background-image: none;
+      }
+    }
+    &.cancel {
+      background-color: grey;
+      background-image: linear-gradient(90deg, grey, lightgray );
+      border-color: darkgray;
+      width: 5.5rem;
+      margin-left: .5rem;
+      &.center {
+        margin: auto;
+        display: block;
+        margin-top: 4px;
+        background-color: yellow;
+
+      }
+      &:hover {
+       background-image: none;
+      }
+    }
+    &.delete {
+      background-color: red;
+      background-image: linear-gradient(90deg, coral, pink );
+      border-color: red;
+      display: block;
+      width: 6.5rem;
+      margin: auto;
+      &:hover {
+       background-image: none;
+      }
+    }
+    &.delete-danger {
+      background-color: black;
+      background-image: linear-gradient(90deg, black, darkgray );
+      border-color: red;
+      color: red;
+      display: block;
+      width: 6.5rem;
+      margin: auto;
+      &:hover {
+       background-image: none;
+      }
+    }
+  }
+}
+.page-container {
+  background-color: hsl(60, 20%, 95%);
+  border-radius: 3rem;
+  width: 1000px;
+  max-width: 1000px;
+  min-width: 1000px;
+  height: 1520px;   /* tweaked height to mimic printing */
+  max-height: 1520px;
+  min-height: 1520px;
+  margin: auto;
+  margin-top: 1rem;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 575px 375px;
+  grid-gap: 50px;
+  .content {
+    margin-right: 0.5rem;
+    .name,
+    .name input,
+    .name textarea {
+      font-size: 5rem;
+      font-family: "Berkshire Swash", cursive;
+      max-width: 586px;
+      word-wrap: break-word;
+    }
+    .race,
+    .race input,
+    .class,
+    .class input {
+      font-size: 2rem;
+    }
+    .stats-and-other {
+      display: grid;
+
+      .stats {
+        padding: 1rem 0 0 0;
+        display: grid;
+        grid-template-columns: repeat(3, 154px);
+        .stat {
+          text-align: center;
+          border: 2px solid black;
+          border-radius: 1rem;
+          margin: 0.5rem 1rem 0.5rem 0;
+          padding: 0.4rem;
+          width: 120px;
+          .stat-title {
+            font-size: 1rem;
+            display: block;
+            font-weight: bold;
+          }
+          .stat-modifier {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: bold;
+            padding-top: 0.5rem;
+          }
+          .stat-score input {
+            font-size: inherit;
+            font-family: inherit;
+            max-width: 50px;
+            // text-align: center;
+            padding-left: 4px;
+            margin: -1px 0 -1px 30px;
+          }
+        }
+      }
+      .ac-hp {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+        .score {
+          padding-left: 8px;
+        }
+      }
+      .ac-hp,
+      .ac-hp input {
+        font-size: 1.5rem;
+        font-family: inherit;
+        .ac,
+        .hp {
+          width: 50%;
+          display: inline-block;
+          padding: 4px;
+          .title {
+            font-weight: bold;
+          }
+        }
+        .score input {
+          width: 60px;
+          max-width: 60px;
+          margin-left: -2px;
+          margin-top: -1px;
+          margin-bottom: -1px;
+        }
+      }
+    }
+    .other {
+      outline: none;
+    }
+  }
+  .pic-and-spells {
+    .pic {
+      overflow: hidden;
+      img {
+        display: block;
+        width: 99%;
+        border: 1px solid black;
+        border-radius: 2rem;
+      }
+      input {
+        width: 92%;
+        padding: 12px;
+        border: 1px blue dashed;
+        outline: none;
+      }
+      .image-input-spacer {
+        height: 26px;
+        display: block;
+      }
+    }
+  }
+  .spells,
+  .equipment {
+    text-align: start;
+    border: 1px solid black;
+    border-radius: 2rem;
+    padding: 0.5rem 1rem 2rem;
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+    h3 {
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    div {
+      padding-bottom: 1rem;
+      .title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding-right: 4px;
+        display: inline;
+        &::after {
+          content: ": ";
+        }
+      }
+      .description {
+        font-style: italic;
+        word-wrap: break-word;
+        display: inline;
+      }
+    }
+  }
+}
+.itemButton {
+    border: none;
+    padding: 4px 8px;
+    font-weight: bold;
+    border: 1px solid black;
+    float: left;
+    margin-left: -72px;
+  border-radius: 1rem;
+  color: black;
+  &.addRow {
+    background-color: lightblue;
+    background-image: linear-gradient(90deg, lightblue, aliceblue );
+    border-color: blue;
+    position: relative;
+    top: -3rem;
+    &:hover {
+        background-image: none;
+    }
+  }
+  &.deleteRow {
+    background-color: coral;
+    background-image: linear-gradient(90deg, coral, pink );
+    border-color: red;
+    &:hover {
+        background-image: none;
+    }
+  }
 }
 
 .equipment {
-    margin-top: 115px;
-
+  margin-top: 115px;
 }
 
-
-.Biff_Buxler .equipment {
-    margin-top: 115px;
+.Biff-Buxler .equipment {
+  margin-top: 115px;
 }
-.Ceren_Tallinn .equipment {
-    margin-top: 115px;
+.Ceren-Tallinn .equipment {
+  margin-top: 115px;
 }
-.Xarbert_Camshaft .equipment{
-    margin-top: 150px;
+.Xarbert-Camshaft .equipment {
+  margin-top: 150px;
 }
-.Xarolth_Tyrlin .equipment{
-
-    margin-top: 62px;
+.Xarolth-Tyrlin .equipment {
+  margin-top: 62px;
 }
-.Tiana_Thunderpants .equipment{
-
-    margin-top: 60px;
+.Tiana-Thunderpants .equipment {
+  margin-top: 60px;
 }
-.December .equipment{
-
-    margin-top: 22px;
+.December .equipment {
+  margin-top: 22px;
 }
-.Kaylee_Frye {
-    .spells {
+.Kaylee-Frye {
+  .spells {
     margin-top: 100px;
-    }
-    .equipment {
+  }
+  .equipment {
     margin-top: 36px;
-    }
+  }
 }
-.Arthos_Battersby .equipment{
-
-    margin-top: 72px;
+.Arthos-Battersby .equipment {
+  margin-top: 72px;
 }
 
-.Kaptain_Killer {
-    .spells {
+.Kaptain-Killer {
+  .spells {
     margin-top: 100px;
-    }
-    .equipment {
+  }
+  .equipment {
     margin-top: 36px;
-    }
+  }
 }
-.Tsigliana_Merovin {
-    .equipment {
+.Tsigliana-Merovin {
+  .equipment {
     margin-top: 36px;
-    }
+  }
 }
 
-.Arakxes_Wilson {
-
-    .equipment {
+.Arakxes-Wilson {
+  .equipment {
     margin-top: 24px;
-    }
+  }
 }
-.Click_Clack {}
-.Sasha_Wondertoes {
-
-    .equipment {
+/*.Click-Clack {}*/
+.Sasha-Wondertoes {
+  .equipment {
     margin-top: 232px;
-    }
+  }
 }
-.Eden_Telomere {
-
-    .equipment {
+.Eden-Telomere {
+  .equipment {
     margin-top: 24px;
-    }
+  }
 }
-.Yx_Creekdancer {
-
-    .spells {
+.Yx-Creekdancer {
+  .spells {
     margin-top: 100px;
-    }
-    .equipment {
+  }
+  .equipment {
     margin-top: 44px;
-    }
+  }
 }
 .Grung {
-
-    .spells {
+  .spells {
     margin-top: 86px;
-    }
-    .equipment {
+  }
+  .equipment {
     margin-top: 44px;
-    }
+  }
 }
